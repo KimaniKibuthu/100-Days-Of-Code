@@ -1,5 +1,7 @@
 import sys
 import sqlalchemy
+import pandas as pd
+
 
 def load_data(messages_filepath, categories_filepath):
     messages = pd.read_csv(messages_filepath)
@@ -8,12 +10,11 @@ def load_data(messages_filepath, categories_filepath):
     return df
     
 
-
 def clean_data(df):
     categories = df['categories'].str.split(';', expand=True)
     row = categories.iloc[0, :]
-    category_colnames = row.str.split('-', expand=True)[1].values
-    categories.columns = category_colnames
+    category_names = row.str.split('-', expand=True)[1].values
+    categories.columns = category_names
     for column in categories:
         # set each value to be the last character of the string
         categories[column] = categories[column].str.split('-', expand=True)[1]
